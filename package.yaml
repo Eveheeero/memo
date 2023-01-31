@@ -21,6 +21,7 @@ description:         Please see the README on GitHub at <https://github.com/Eveh
 
 dependencies:
 - base >= 4.7 && < 5
+- brick == 1.6
 
 ghc-options:
 - -Wall
