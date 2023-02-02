@@ -1,6 +1,6 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 
-module Folder (baseFolder) where
+module Memo.Folder (baseFolder) where
 
 import System.Directory (createDirectory, doesDirectoryExist)
 import System.Environment qualified
@@ -24,9 +24,8 @@ baseFolder = do
       return folder
     else return folder
 
-baseFolder_ = do
-  home <- homeFolder
-  baseFolder__ home
+{- baseFolder_ = homeFolder >>= if System.Info.os == "mingw32" then return . (++ "\\AppData\\Roaming\\memo") else return . (++ "/.config/memo") -}
+baseFolder_ = homeFolder >>= baseFolder__
 
 homeFolder = System.Environment.getEnv "HOME"
 

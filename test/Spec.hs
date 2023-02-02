@@ -1,6 +1,6 @@
-import Lib (someFunc)
+import Memo.Folder (baseFolder)
 
 main :: IO ()
 main =
   do
-    someFunc
+    baseFolder >>= putStrLn

@@ -7,7 +7,7 @@ import Brick qualified
 import Brick.Widgets.Border qualified
 import Brick.Widgets.Center qualified
 import Brick.Widgets.Table qualified
-import Lib ()
+import Memo ()
 
 str :: String -> Brick.Widget ()
 str = Brick.str
