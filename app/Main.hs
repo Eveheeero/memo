@@ -1,4 +1,7 @@
 {-# LANGUAGE ImportQualifiedPost #-}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+
+{-# HLINT ignore "Use void" #-}
 
 module Main (main) where
 
@@ -8,8 +11,11 @@ import Brick.Widgets.Border qualified
 import Brick.Widgets.Center qualified
 import Brick.Widgets.Table qualified
 import Control.Monad (unless, when)
+import Data.List (findIndex)
+import Data.Maybe (isJust)
 import Memo ()
 import System.Environment qualified
+import Text.Regex.TDFA ((=~))
 
 str :: String -> Brick.Widget ()
 str = Brick.str
@@ -47,8 +53,8 @@ strTable x
   | length x == 1 = [str (head x)]
   | otherwise = str (head x) : strTable (tail x)
 
-iteractive :: IO ()
-iteractive =
+interactive :: IO ()
+interactive =
   do
     out frame ()
   where
@@ -60,17 +66,24 @@ main :: IO ()
 main =
   do
     args <- System.Environment.getArgs
-    when (null args) (putStrLn "옵션 표시하기")
+    when (null args) (putStrLn "옵션 표시하기" >> return ())
     unless
       (null args)
       ( do
-          let argLength = length args
-          case args !! 0 of
-            "--interactive" -> iteractive
-            _ ->
-              ( do
-                  putStrLn "옵션 표시하기"
-                  putStrLn "키워드 기반 메모 작성"
-                  putStrLn "어떤 키워드였는지 검색"
-              )
+          putStrLn $ head args
+          when (isJust $ findIndex (=~ "--interactive") args) interactive >> return ()
+          mainWithArgs args >> return ()
       )
+
+mainWithArgs :: [String] -> IO ()
+mainWithArgs args =
+  do
+    let argLength = length args
+    case head args of
+      "--option" -> putStrLn "옵션 표시하기"
+      _ ->
+        ( do
+            putStrLn "옵션 표시하기"
+            putStrLn "키워드 기반 메모 작성"
+            putStrLn "어떤 키워드였는지 검색"
+        )
