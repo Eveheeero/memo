@@ -3,7 +3,11 @@ module Lib
   )
 where
 
+import Folder (baseFolder)
+
 someFunc :: IO ()
 someFunc =
   do
-    putStrLn "someFunc"
+    base <- baseFolder
+    let out = show base
+    putStrLn out

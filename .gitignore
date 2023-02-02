@@ -1,4 +1,5 @@
 *.cabal
+stack.yaml.lock
 
 ### Haskell ###
 dist
