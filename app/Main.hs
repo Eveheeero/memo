@@ -7,7 +7,9 @@ import Brick qualified
 import Brick.Widgets.Border qualified
 import Brick.Widgets.Center qualified
 import Brick.Widgets.Table qualified
+import Control.Monad (unless, when)
 import Memo ()
+import System.Environment qualified
 
 str :: String -> Brick.Widget ()
 str = Brick.str
@@ -45,11 +47,30 @@ strTable x
   | length x == 1 = [str (head x)]
   | otherwise = str (head x) : strTable (tail x)
 
-main :: IO ()
-main =
+iteractive :: IO ()
+iteractive =
   do
     out frame ()
   where
     left_menu = vLimit 20 ((vCenter . table . strTable) ["FirstMenu", "SecondMenu"])
     right = (border . center . hBox) [str "First", str "Second"]
     frame = left_menu <+> right
+
+main :: IO ()
+main =
+  do
+    args <- System.Environment.getArgs
+    when (null args) (putStrLn "옵션 표시하기")
+    unless
+      (null args)
+      ( do
+          let argLength = length args
+          case args !! 0 of
+            "--interactive" -> iteractive
+            _ ->
+              ( do
+                  putStrLn "옵션 표시하기"
+                  putStrLn "키워드 기반 메모 작성"
+                  putStrLn "어떤 키워드였는지 검색"
+              )
+      )
