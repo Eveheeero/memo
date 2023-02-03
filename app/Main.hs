@@ -1,5 +1,4 @@
 {-# LANGUAGE ImportQualifiedPost #-}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 
 {-# HLINT ignore "Use void" #-}
 
@@ -15,7 +14,6 @@ import Data.List (findIndex)
 import Data.Maybe (isJust)
 import Memo ()
 import System.Environment qualified
-import Text.Regex.TDFA ((=~))
 
 str :: String -> Brick.Widget ()
 str = Brick.str
@@ -69,10 +67,9 @@ main =
     when (null args) (putStrLn "옵션 표시하기" >> return ())
     unless
       (null args)
-      ( do
-          putStrLn $ head args
-          when (isJust $ findIndex (=~ "--interactive") args) interactive >> return ()
-          mainWithArgs args >> return ()
+      ( if ((==) "interactive" $ head args)
+          then interactive
+          else mainWithArgs args
       )
 
 mainWithArgs :: [String] -> IO ()
