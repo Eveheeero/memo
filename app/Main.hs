@@ -1,7 +1,5 @@
 {-# LANGUAGE ImportQualifiedPost #-}
 
-{-# HLINT ignore "Use void" #-}
-
 module Main (main) where
 
 import Brick ((<+>))
@@ -10,8 +8,6 @@ import Brick.Widgets.Border qualified
 import Brick.Widgets.Center qualified
 import Brick.Widgets.Table qualified
 import Control.Monad (unless, when)
-import Data.List (findIndex)
-import Data.Maybe (isJust)
 import Memo ()
 import System.Environment qualified
 
@@ -51,12 +47,15 @@ strTable x
   | length x == 1 = [str (head x)]
   | otherwise = str (head x) : strTable (tail x)
 
+lMenu :: [String] -> Brick.Widget ()
+lMenu = vLimit 20 . vCenter . table . strTable
+
 interactive :: IO ()
 interactive =
   do
     out frame ()
   where
-    left_menu = vLimit 20 ((vCenter . table . strTable) ["FirstMenu", "SecondMenu"])
+    left_menu = lMenu ["FirstMenu", "SecondMenu"]
     right = (border . center . hBox) [str "First", str "Second"]
     frame = left_menu <+> right
 
@@ -64,10 +63,10 @@ main :: IO ()
 main =
   do
     args <- System.Environment.getArgs
-    when (null args) (putStrLn "옵션 표시하기" >> return ())
+    when (null args) (putStrLn "옵션 표시하기")
     unless
       (null args)
-      ( if ((==) "interactive" $ head args)
+      ( if (==) "interactive" $ head args
           then interactive
           else mainWithArgs args
       )
