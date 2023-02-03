@@ -3,4 +3,6 @@ module Memo
   )
 where
 
+import Memo.Date ()
 import Memo.Folder (baseFolder)
+import Memo.Keyword ()
