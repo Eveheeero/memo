@@ -1,8 +1,8 @@
 module Memo
-  ( module Memo.Folder,
+  ( module Memo.Util.Folder,
   )
 where
 
-import Memo.Date ()
-import Memo.Folder (baseFolder)
-import Memo.Keyword ()
+import Memo.Writer.Date ()
+import Memo.Util.Folder (baseFolder)
+import Memo.Writer.Keyword ()
